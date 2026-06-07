@@ -298,6 +298,89 @@ main {
 input::-webkit-inner-spin-button,
 input::-webkit-outer-spin-button { opacity: 0.3; }
 
+/* ============ MOBILE RESPONSIVE ============ */
+@media(max-width: 600px){
+
+  /* Header */
+  .header-body {
+    gap: 8px;
+    padding: 10px 12px 14px;
+  }
+  .tnstc-emblem { width: 50px; height: 50px; }
+  .tnstc-emblem img { width: 38px; height: 38px; }
+  .header-text .main-title { font-size: 13px; line-height: 1.3; }
+  .header-text .sub-title { font-size: 10px; margin-top: 2px; }
+  .header-text .dept-tag { font-size: 9px; margin-top: 2px; }
+  .header-bus svg { width: 60px; height: 30px; }
+  .header-bus > div { font-size: 9px !important; line-height: 1.5; }
+
+  /* Logout bar */
+  .logout-bar { padding: 3px 10px 6px; }
+  .logout-btn { font-size: 0.72rem; padding: 4px 10px; }
+
+  /* Main */
+  main { padding: 1rem 0.75rem 2.5rem; }
+
+  /* Section badge */
+  .section-badge { font-size: 11px; padding: 5px 10px; }
+
+  /* Input layout - single column */
+  .layout { grid-template-columns: 1fr !important; gap: 14px; }
+
+  /* Cards */
+  .card { padding: 14px 12px; border-radius: 10px; }
+  .card-title { font-size: 10px; margin-bottom: 10px; }
+
+  /* Fields */
+  .field { margin-bottom: 8px; }
+  .field label { font-size: 11px; }
+  .field input {
+    padding: 8px 10px;
+    font-size: 13px;
+  }
+  .auto-val { padding: 8px 10px; }
+  .auto-val .av-num { font-size: 16px; }
+  .field .unit { font-size: 10px; }
+
+  /* Result grids - stack all to 1 column */
+  .res-grid-top { grid-template-columns: 1fr !important; gap: 12px; }
+  .res-grid-bottom { grid-template-columns: 1fr !important; gap: 12px; }
+
+  /* Result cards */
+  .res-card { padding: 1rem 1rem; border-radius: 10px; }
+  .res-card-title { font-size: 0.92rem; margin-bottom: 0.75rem; }
+
+  /* Line items */
+  .line-item { font-size: 0.82rem; padding: 0.38rem 0; }
+  .li-label { width: 60%; font-size: 0.8rem; }
+  .li-value { font-size: 0.82rem; }
+  .line-item.line-total .li-label { font-size: 0.85rem; }
+  .line-item.line-total .li-value { font-size: 0.92rem; }
+
+  /* Grand total */
+  .grand-total {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 14px 16px;
+  }
+  .gt-label { font-size: 10px; }
+  .gt-sub { font-size: 10px; }
+  .gt-amount { font-size: 22px; }
+
+  /* Footer */
+  .footer { font-size: 10px; padding: 1rem 0.75rem; }
+
+  /* Login box */
+  .login-box {
+    padding: 1.8rem 1.3rem;
+    border-radius: 12px;
+  }
+  .login-title { font-size: 1rem; }
+  .login-input { font-size: 0.95rem; padding: 0.65rem 0.85rem; }
+  .login-btn { font-size: 0.95rem; padding: 0.75rem; }
+}
+
 /* LOGIN */
 .login-overlay {
   position: fixed;
