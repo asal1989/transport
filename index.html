@@ -20,7 +20,7 @@ body {
 
 /* HEADER */
 .tnstc-header {
-  background: linear-gradient(135deg, #CC0000 0%, #8B0000 40%, #CC0000 70%, #FF6600 100%);
+  background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 40%, #4CAF50 70%, #81C784 100%);
   padding: 0;
   position: relative;
   overflow: hidden;
@@ -28,7 +28,7 @@ body {
 }
 .header-stripe {
   height: 8px;
-  background: repeating-linear-gradient(90deg, #FFD700 0 30px, #CC0000 30px 60px);
+  background: repeating-linear-gradient(90deg, #FFD700 0 30px, #4CAF50 30px 60px);
 }
 .header-body {
   display: flex; align-items: center; gap: 20px;
@@ -80,7 +80,7 @@ main {
   display: inline-flex; align-items: center; gap: 8px;
   background: #FFE8E8;
   border: 1px solid rgba(204,0,0,0.3);
-  border-left: 4px solid #CC0000;
+  border-left: 4px solid #4CAF50;
   padding: 6px 14px;
   border-radius: 0 6px 6px 0;
   font-size: 13px; font-weight: 600; color: #AA0000;
@@ -95,19 +95,19 @@ main {
 .card {
   background: #FFFFFF;
   border: 1px solid #E0D5C5;
-  border-top: 3px solid #CC0000;
+  border-top: 3px solid #4CAF50;
   border-radius: 10px;
   padding: 20px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.06);
 }
 .card-title {
   font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
-  color: #CC0000; font-weight: 700; margin-bottom: 16px;
+  color: #4CAF50; font-weight: 700; margin-bottom: 16px;
   display: flex; align-items: center; gap: 8px;
 }
 .card-title::before {
   content: ''; width: 20px; height: 3px;
-  background: #CC0000; border-radius: 2px; flex-shrink: 0;
+  background: #4CAF50; border-radius: 2px; flex-shrink: 0;
 }
 
 /* FIELDS */
@@ -130,7 +130,7 @@ main {
   outline: none;
   transition: border-color 0.2s;
 }
-.field input:focus { border-color: #CC0000; background: #FFF5F5; }
+.field input:focus { border-color: #4CAF50; background: #FFF5F5; }
 .field .unit {
   font-size: 11px; color: #999988;
   white-space: nowrap; padding: 0 4px;
@@ -147,7 +147,7 @@ main {
   display: flex; flex-direction: column; gap: 4px;
 }
 .auto-val .av-label { font-size: 11px; color: #888877; }
-.auto-val .av-num { font-size: 18px; font-weight: 700; color: #CC0000; }
+.auto-val .av-num { font-size: 18px; font-weight: 700; color: #4CAF50; }
 
 /* RESULT CARDS */
 .result-section { display: flex; flex-direction: column; gap: 14px; }
@@ -165,16 +165,16 @@ main {
   border-color: rgba(204,0,0,0.35);
 }
 .rcard .rl { font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; color: #999988; margin-bottom: 6px; }
-.rcard.highlight .rl { color: #CC0000; }
+.rcard.highlight .rl { color: #4CAF50; }
 .rcard .rv { font-size: 20px; font-weight: 700; color: #1A1A2E; }
-.rcard.highlight .rv { color: #CC0000; }
+.rcard.highlight .rv { color: #4CAF50; }
 .rcard .rd { font-size: 11px; color: #AAAAAA; margin-top: 3px; }
 
 .mini2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
 
 /* GRAND TOTAL */
 .grand-total {
-  background: linear-gradient(135deg, #8B0000 0%, #CC0000 50%, #8B0000 100%);
+  background: linear-gradient(135deg, #2E7D32 0%, #4CAF50 50%, #2E7D32 100%);
   border: 2px solid #FFD700;
   border-radius: 12px; padding: 20px 24px;
   display: flex; justify-content: space-between; align-items: center;
@@ -186,7 +186,7 @@ main {
   content: '';
   position: absolute; top: 0; left: 0; right: 0;
   height: 4px;
-  background: repeating-linear-gradient(90deg, #FFD700 0 20px, #CC0000 20px 40px);
+  background: repeating-linear-gradient(90deg, #FFD700 0 20px, #4CAF50 20px 40px);
 }
 .gt-label { font-size: 11px; letter-spacing: 1px; color: rgba(255,230,180,0.85); margin-bottom: 5px; }
 .gt-sub { font-size: 11px; color: rgba(255,220,150,0.6); }
