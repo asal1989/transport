@@ -301,6 +301,63 @@ input::-webkit-outer-spin-button { opacity: 0.3; }
 </head>
 <body>
 
+<!-- LOGIN OVERLAY -->
+<div id="loginOverlay" style="
+  position:fixed; inset:0; z-index:9999;
+  background: var(--navy);
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Noto Sans Tamil',sans-serif;
+">
+  <div style="
+    background: var(--card-bg);
+    border: 2px solid var(--gold);
+    border-radius: 16px;
+    padding: 2.5rem 2rem;
+    width: 100%; max-width: 360px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+    text-align: center;
+  ">
+    <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🚌</div>
+    <h2 style="font-family:'Noto Serif Tamil',serif; color:var(--navy); font-size:1.1rem; margin-bottom:0.3rem;">போக்குவரத்து ஓய்வூதியர்</h2>
+    <p style="color:var(--muted); font-size:0.82rem; margin-bottom:1.5rem;">பணப்பலன் கணக்கீடு மென்பொருள்</p>
+
+    <div style="margin-bottom:1rem; text-align:left;">
+      <label style="font-size:0.78rem; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:0.08em;">கடவுச்சொல் (Password)</label>
+      <input type="password" id="loginPassword" placeholder="Enter password"
+        onkeydown="if(event.key==='Enter') doLogin()"
+        style="
+          width:100%; margin-top:6px;
+          border:1.5px solid var(--border); border-radius:8px;
+          padding:0.7rem 1rem; font-size:1rem;
+          font-family:'Noto Sans Tamil',sans-serif;
+          outline:none; transition:border-color 0.2s;
+        "
+        onfocus="this.style.borderColor='var(--gold)'"
+        onblur="this.style.borderColor='var(--border)'"
+      />
+    </div>
+
+    <div id="loginError" style="color:#e53935; font-size:0.82rem; margin-bottom:0.8rem; display:none;">
+      ❌ தவறான கடவுச்சொல். மீண்டும் முயற்சிக்கவும்.
+    </div>
+
+    <button onclick="doLogin()" style="
+      width:100%; background:var(--navy); color:var(--gold);
+      border:none; border-radius:8px; padding:0.8rem;
+      font-size:0.97rem; font-weight:600; cursor:pointer;
+      font-family:'Noto Sans Tamil',sans-serif;
+      transition:background 0.2s;
+    "
+    onmouseover="this.style.background='var(--slate)'"
+    onmouseout="this.style.background='var(--navy)'"
+    >உள்நுழை (Login)</button>
+
+    <p style="color:var(--muted); font-size:0.75rem; margin-top:1.2rem;">
+      D. கதிரேசன் · மாநிலத்தலைவர் · 9965181476
+    </p>
+  </div>
+</div>
+
 
 
 <!-- HEADER -->
@@ -548,6 +605,24 @@ function calculate(){
   });
 }
 calculate();
+
+// LOGIN
+const PASS = "tnstc2025";
+function doLogin(){
+  const val = document.getElementById('loginPassword').value;
+  if(val === PASS){
+    document.getElementById('loginOverlay').style.display='none';
+    sessionStorage.setItem('auth','1');
+  } else {
+    document.getElementById('loginError').style.display='block';
+    document.getElementById('loginPassword').style.borderColor='#e53935';
+    document.getElementById('loginPassword').focus();
+  }
+}
+// Auto-hide if already logged in this session
+if(sessionStorage.getItem('auth')==='1'){
+  document.getElementById('loginOverlay').style.display='none';
+}
 </script>
 </body>
 </html>
