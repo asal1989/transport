@@ -228,16 +228,31 @@ main {
 }
 
 .line-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.45rem 0;
+  display: table;
+  width: 100%;
+  padding: 0.42rem 0;
   border-bottom: 1px dashed #ece7de;
   font-size: 0.88rem;
 }
 .line-item:last-child { border-bottom: none; }
-.li-label { color: var(--muted); }
-.li-value { font-weight: 600; color: var(--navy); }
+.li-label {
+  display: table-cell;
+  color: var(--muted);
+  width: 65%;
+  padding-right: 8px;
+  vertical-align: middle;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.li-value {
+  display: table-cell;
+  font-weight: 600;
+  color: var(--navy);
+  text-align: right;
+  white-space: nowrap;
+  vertical-align: middle;
+}
 
 .line-item.line-total {
   margin-top: 0.4rem;
@@ -245,7 +260,7 @@ main {
   border-top: 2px solid var(--gold);
   border-bottom: none;
 }
-.line-item.line-total .li-label { font-weight: 700; color: var(--navy); font-size: 0.93rem; }
+.line-item.line-total .li-label { font-weight: 700; color: var(--navy); font-size: 0.93rem; white-space: nowrap; }
 .line-item.line-total .li-value { color: var(--gold); font-size: 1rem; }
 
 /* keep old rcard class for animation hook */
