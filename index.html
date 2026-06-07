@@ -189,29 +189,67 @@ main {
 .auto-val .av-num { font-size: 18px; font-weight: 700; color: var(--slate); }
 
 /* RESULT CARDS */
-.result-section { display: flex; flex-direction: column; gap: 14px; }
+.result-section { display: flex; flex-direction: column; gap: 16px; }
 
-.rcard {
+.res-grid-top {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.res-grid-bottom {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+@media(max-width:700px){
+  .res-grid-top { grid-template-columns: 1fr; }
+  .res-grid-bottom { grid-template-columns: 1fr; }
+}
+
+.res-card {
   background: var(--card-bg);
   border: 1px solid var(--border);
-  border-radius: 8px; padding: 14px 16px;
-  transition: transform 0.2s, box-shadow 0.2s;
-  box-shadow: 0 2px 8px rgba(10,22,40,0.06);
+  border-radius: 12px;
+  padding: 1.4rem 1.5rem;
+  box-shadow: 0 2px 12px rgba(10,22,40,0.06);
   opacity: 0;
-  transform: translateY(10px);
+  transform: translateY(12px);
+  transition: opacity 0.4s ease, transform 0.4s ease, box-shadow 0.2s;
 }
-.rcard.visible { opacity: 1; transform: translateY(0); }
-.rcard:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(10,22,40,0.1); }
-.rcard.highlight {
-  background: var(--navy);
-  border-color: var(--gold);
-}
-.rcard .rl { font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
-.rcard.highlight .rl { color: var(--gold); }
-.rcard .rv { font-size: 20px; font-weight: 700; color: var(--navy); }
-.rcard.highlight .rv { color: var(--cream); }
-.rcard .rd { font-size: 11px; color: var(--muted); margin-top: 3px; }
+.res-card.visible { opacity: 1; transform: translateY(0); }
+.res-card:hover { box-shadow: 0 6px 20px rgba(10,22,40,0.1); }
 
+.res-card-title {
+  font-family: 'Noto Serif Tamil', serif;
+  font-size: 1rem;
+  color: var(--muted);
+  margin-bottom: 1rem;
+  display: flex; align-items: center; gap: 0.5rem;
+}
+
+.line-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.45rem 0;
+  border-bottom: 1px dashed #ece7de;
+  font-size: 0.88rem;
+}
+.line-item:last-child { border-bottom: none; }
+.li-label { color: var(--muted); }
+.li-value { font-weight: 600; color: var(--navy); }
+
+.line-item.line-total {
+  margin-top: 0.4rem;
+  padding-top: 0.6rem;
+  border-top: 2px solid var(--gold);
+  border-bottom: none;
+}
+.line-item.line-total .li-label { font-weight: 700; color: var(--navy); font-size: 0.93rem; }
+.line-item.line-total .li-value { color: var(--gold); font-size: 1rem; }
+
+/* keep old rcard class for animation hook */
+.rcard { }
 .mini2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
 
 /* GRAND TOTAL */
@@ -350,66 +388,57 @@ input::-webkit-outer-spin-button { opacity: 0.3; }
       <div class="section-badge">கணக்கீட்டு முடிவுகள் · பணப்பலன் விவரம்</div>
       <div class="result-section">
 
-        <!-- Pension -->
-        <div class="card" style="border-top-color:#FFD700">
-          <div class="card-title" style="color:#FFD700">① ஓய்வூதியம் (Pension)</div>
-          <div class="mini2">
-            <div class="rcard">
-              <div class="rl">அடிப்படை ஓய்வூதியம்</div>
-              <div class="rv" id="rPension">₹28,000</div>
-              <div class="rd">Basic / 2</div>
-            </div>
-            <div class="rcard">
-              <div class="rl">அகவிலைப்படி</div>
-              <div class="rv" id="rDaOnPension">₹16,800</div>
-              <div class="rd" id="rDaDetail">60% of pension</div>
-            </div>
+        <!-- Results Grid: 3 cols top, 2 cols bottom -->
+        <div class="res-grid-top">
+
+          <!-- Active Salary card -->
+          <div class="res-card rcard">
+            <h3 class="res-card-title">💼 ஊதியம் (Active Salary)</h3>
+            <div class="line-item"><span class="li-label">அடிப்படை ஊதியம்</span><span class="li-value" id="rBasic">—</span></div>
+            <div class="line-item"><span class="li-label">அகவிலைப்படி (<span id="rDaPct">—</span>%)</span><span class="li-value" id="rDaAmount2">—</span></div>
+            <div class="line-item"><span class="li-label">வீட்டு வாடகை படி (HRA)</span><span class="li-value" id="rHra">—</span></div>
+            <div class="line-item"><span class="li-label">நகர இசை படி (CCA)</span><span class="li-value" id="rCca">—</span></div>
+            <div class="line-item line-total"><span class="li-label">மொத்த ஊதியம்</span><span class="li-value" id="rGross">—</span></div>
           </div>
-          <div class="rcard highlight">
-            <div class="rl">மொத்த மாதாந்திர ஓய்வூதியம் (PENSION)</div>
-            <div class="rv" id="rTotalPension">₹44,900</div>
-            <div class="rd">ஓய்வூதியம் + அகவிலை + ₹100 மருத்துவ படி</div>
+
+          <!-- Pension card -->
+          <div class="res-card rcard">
+            <h3 class="res-card-title">🎖️ ஓய்வூதியம் (Pension)</h3>
+            <div class="line-item"><span class="li-label">அடிப்படை ஓய்வூதியம்</span><span class="li-value" id="rPension">—</span></div>
+            <div class="line-item"><span class="li-label">அகவிலைப்படி (<span id="rDaDetail">—</span>)</span><span class="li-value" id="rDaOnPension">—</span></div>
+            <div class="line-item"><span class="li-label">மருத்துவ படி</span><span class="li-value" id="rMedical">₹100</span></div>
+            <div class="line-item line-total"><span class="li-label">மொத்த மாதாந்திர ஓய்வூதியம்</span><span class="li-value" id="rTotalPension">—</span></div>
+          </div>
+
+          <!-- Commutation card -->
+          <div class="res-card rcard">
+            <h3 class="res-card-title">📊 முன்கூட்டு தொகை (Commutation)</h3>
+            <div class="line-item"><span class="li-label">கழிக்கப்பட்ட ஓய்வூதியம் (1/3)</span><span class="li-value" id="rCommPart">—</span></div>
+            <div class="line-item"><span class="li-label">Commutation காரணி</span><span class="li-value" id="rCommDetail">—</span></div>
+            <div class="line-item line-total"><span class="li-label">முன்கூட்டு தொகை</span><span class="li-value" id="rCommutation">—</span></div>
           </div>
         </div>
 
-        <!-- Commutation -->
-        <div class="rcard highlight">
-          <div class="rl">② முன்கூட்டு தொகை (Commutation)</div>
-          <div class="rv" id="rCommutation">₹9,37,552</div>
-          <div class="rd" id="rCommDetail">Pension/3 × 12 × 8.371</div>
-        </div>
+        <div class="res-grid-bottom">
 
-        <!-- Gratuity -->
-        <div class="card">
-          <div class="card-title">③ பணிக்கொடை தொகை (Gratuity)</div>
-          <div class="mini2">
-            <div class="rcard">
-              <div class="rl">1 நாள் (B+DA)/26</div>
-              <div class="rv" id="rGratDay">₹3,692</div>
-            </div>
-            <div class="rcard">
-              <div class="rl">1 மாதம் × 15</div>
-              <div class="rv" id="rGratMonth">₹55,385</div>
-            </div>
+          <!-- Gratuity card -->
+          <div class="res-card rcard">
+            <h3 class="res-card-title">🏆 பணிக்கொடை தொகை (Gratuity)</h3>
+            <div class="line-item"><span class="li-label">அடிப்படை + அகவிலை (B+DA)</span><span class="li-value" id="rBDA">—</span></div>
+            <div class="line-item"><span class="li-label">1 நாள் (÷26)</span><span class="li-value" id="rGratDay">—</span></div>
+            <div class="line-item"><span class="li-label">1 ஆண்டு (×15)</span><span class="li-value" id="rGratMonth">—</span></div>
+            <div class="line-item line-total"><span class="li-label" id="rGratLabel">மொத்த பணிக்கொடை தொகை</span><span class="li-value" id="rGratuity">—</span></div>
           </div>
-          <div class="rcard highlight">
-            <div class="rl" id="rGratLabel">மொத்த பணிக்கொடை தொகை (× 31 yrs)</div>
-            <div class="rv" id="rGratuity">₹15,50,769</div>
-          </div>
-        </div>
 
-        <!-- Leave Salary -->
-        <div class="card">
-          <div class="card-title">④ விடுப்பு ஊதியம் (Leave Salary)</div>
-          <div class="rcard" style="margin-bottom:10px">
-            <div class="rl">அடிப்படை (B+DA+HRA+CCA)</div>
-            <div class="rv" id="rLeaveBase">₹1,02,000</div>
+          <!-- Leave Salary card -->
+          <div class="res-card rcard">
+            <h3 class="res-card-title">🌴 விடுப்பு ஊதியம் (Leave Salary)</h3>
+            <div class="line-item"><span class="li-label">அடிப்படை + DA + HRA + CCA</span><span class="li-value" id="rLeaveBase">—</span></div>
+            <div class="line-item"><span class="li-label">1 நாள் (÷30)</span><span class="li-value" id="rLeaveDay">—</span></div>
+            <div class="line-item"><span class="li-label">விடுப்பு நாட்கள்</span><span class="li-value" id="rLeaveDays">—</span></div>
+            <div class="line-item line-total"><span class="li-label" id="rLeaveLabel">மொத்த விடுப்பு ஊதியம்</span><span class="li-value" id="rLeaveSalary">—</span></div>
           </div>
-          <div class="rcard highlight">
-            <div class="rl" id="rLeaveLabel">மொத்த விடுப்பு ஊதியம் (237.5 நாட்கள்)</div>
-            <div class="rv" id="rLeaveSalary">₹8,07,500</div>
-            <div class="rd">Base / 30 × நாட்கள்</div>
-          </div>
+
         </div>
 
         <!-- Grand Total -->
@@ -418,7 +447,7 @@ input::-webkit-outer-spin-button { opacity: 0.3; }
             <div class="gt-label">மொத்த ஓய்வூதிய நிதி · Total Retirement Corpus</div>
             <div class="gt-sub">முன்கூட்டு தொகை + பணிக்கொடை தொகை + விடுப்பு ஊதியம்</div>
           </div>
-          <div class="gt-amount" id="rTotal">₹33,95,821</div>
+          <div class="gt-amount" id="rTotal">—</div>
         </div>
 
       </div>
@@ -461,26 +490,46 @@ function calculate(){
 
   const total=comm+grat+lsal;
 
-  s("daAmount",inr(da));
-  s("rPension",inr(pension));
-  s("rDaOnPension",inr(daPen));
-  s("rDaDetail",daP+"% of pension");
-  s("rTotalPension",inr(total_pen));
-  s("rCommutation",inr(comm));
-  s("rCommDetail","Pension/3 × 12 × "+cf);
-  s("rGratDay",inr(gd));
-  s("rGratMonth",inr(gm));
-  s("rGratLabel","மொத்த பணிக்கொடை தொகை (× "+svc+" yrs)");
-  s("rGratuity",inr(grat));
-  s("rLeaveBase",inr(lb));
-  s("rLeaveLabel","மொத்த விடுப்பு ஊதியம் ("+ld+" நாட்கள்)");
-  s("rLeaveSalary",inr(lsal));
-  s("rTotal",inr(total));
+  // Active Salary
+  s("rBasic", inr(basic));
+  s("rDaPct", daP);
+  s("rDaAmount2", inr(da));
+  s("rHra", inr(hra));
+  s("rCca", inr(cca));
+  s("rGross", inr(basic+da+hra+cca));
+  s("daAmount", inr(da));
 
-  // Animate rcards
-  document.querySelectorAll('.rcard').forEach((el, i) => {
+  // Pension
+  s("rPension", inr(pension));
+  s("rDaDetail", daP+"% of pension");
+  s("rDaOnPension", inr(daPen));
+  s("rTotalPension", inr(total_pen));
+
+  // Commutation
+  s("rCommPart", inr(pension/3));
+  s("rCommDetail", cf+" × 12");
+  s("rCommutation", inr(comm));
+
+  // Gratuity
+  s("rBDA", inr(bda));
+  s("rGratDay", inr(gd));
+  s("rGratMonth", inr(gm));
+  s("rGratLabel", "மொத்த பணிக்கொடை தொகை (× "+svc+" yrs)");
+  s("rGratuity", inr(grat));
+
+  // Leave Salary
+  s("rLeaveBase", inr(lb));
+  s("rLeaveDay", inr(lb/30));
+  s("rLeaveDays", ld+" நாட்கள்");
+  s("rLeaveLabel", "மொத்த விடுப்பு ஊதியம் ("+ld+" நாட்கள்)");
+  s("rLeaveSalary", inr(lsal));
+
+  s("rTotal", inr(total));
+
+  // Animate res-cards
+  document.querySelectorAll('.res-card').forEach((el, i) => {
     el.classList.remove('visible');
-    setTimeout(() => el.classList.add('visible'), 60 * i);
+    setTimeout(() => el.classList.add('visible'), 80 * i);
   });
 }
 calculate();
