@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Bus body -->
+    <path
+        android:fillColor="#c9a84c"
+        android:pathData="M20,35 L88,35 Q92,35 92,39 L92,68 Q92,72 88,72 L20,72 Q16,72 16,68 L16,39 Q16,35 20,35 Z"/>
+    <!-- Windows -->
+    <path
+        android:fillColor="#0a1628"
+        android:pathData="M22,40 L36,40 L36,52 L22,52 Z"/>
+    <path
+        android:fillColor="#0a1628"
+        android:pathData="M41,40 L55,40 L55,52 L41,52 Z"/>
+    <path
+        android:fillColor="#0a1628"
+        android:pathData="M60,40 L74,40 L74,52 L60,52 Z"/>
+    <!-- Wheels -->
+    <circle android:fillColor="#0a1628" android:cx="30" android:cy="74" android:r="7"/>
+    <circle android:fillColor="#c9a84c" android:cx="30" android:cy="74" android:r="3"/>
+    <circle android:fillColor="#0a1628" android:cx="78" android:cy="74" android:r="7"/>
+    <circle android:fillColor="#c9a84c" android:cx="78" android:cy="74" android:r="3"/>
+    <!-- Gold stripe -->
+    <path
+        android:fillColor="#e8c96a"
+        android:pathData="M16,56 L92,56 L92,60 L16,60 Z"/>
+
+</vector>
