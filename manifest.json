@@ -1,0 +1,26 @@
+{
+  "name": "போக்குவரத்து பணப்பலன் கணக்கீடு",
+  "short_name": "TNSTC பென்ஷன்",
+  "description": "போக்குவரத்து ஓய்வூதியர் பென்ஷன் தொகை மற்றும் பணப்பலன் கணக்கீடு மென்பொருள்",
+  "start_url": "/transport/",
+  "scope": "/transport/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0a1628",
+  "theme_color": "#0a1628",
+  "lang": "ta",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
