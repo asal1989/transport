@@ -1,4 +1,4 @@
-const CACHE = 'tnstc-v1';
+const CACHE = 'tnstc-v3';
 const ASSETS = [
   '/transport/',
   '/transport/index.html'
