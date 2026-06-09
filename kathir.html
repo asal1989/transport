@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>குறைந்த பணி ஓய்வூதியர் பென்ஷன் கணக்கீடு</title>
+<meta property="og:title" content="குறைந்த பணி ஓய்வூதியர் பென்ஷன் கணக்கீடு"/>
+<meta property="og:description" content="30 ஆண்டுகளுக்கு குறைவான பணி புரிந்தவர்களுக்கான பென்ஷன் மற்றும் பணப்பலன் கணக்கீடு"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Tamil:wght@400;600;700&family=Noto+Serif+Tamil:wght@700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+
+:root {
+  --navy: #0a1628;
+  --gold: #c9a84c;
+  --gold-light: #e8c96a;
+  --cream: #f9f5ee;
+  --slate: #1e2d45;
+  --muted: #6b7c93;
+  --card-bg: #ffffff;
+  --border: #e3ddd4;
+}
+
+body {
+  font-family: 'Noto Sans Tamil', sans-serif;
+  background: var(--cream);
+  color: var(--navy);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* LOGIN */
+.login-overlay {
+  position: fixed; top:0; left:0; right:0; bottom:0;
+  z-index: 9999; background: #0a1628;
+  display: flex; align-items: center; justify-content: center;
+}
+.login-overlay.hidden { display: none; }
+.login-box {
+  background: #ffffff; border: 2px solid #c9a84c;
+  border-radius: 16px; padding: 2.2rem 1.8rem;
+  width: 90%; max-width: 360px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.5); text-align: center;
+}
+.login-icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
+.login-title { font-family: 'Noto Serif Tamil',serif; color: #0a1628; font-size: 1.1rem; margin-bottom: 0.3rem; }
+.login-sub { color: #6b7c93; font-size: 0.82rem; margin-bottom: 1.5rem; }
+.login-field { margin-bottom: 1rem; text-align: left; }
+.login-label { display: block; font-size: 0.78rem; font-weight: 600; color: #6b7c93; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; }
+.login-input { width: 100%; border: 1.5px solid #e3ddd4; border-radius: 8px; padding: 0.75rem 1rem; font-size: 1rem; font-family: 'Noto Sans Tamil',sans-serif; outline: none; color: #0a1628; transition: border-color 0.2s; }
+.login-input:focus { border-color: #c9a84c; }
+.login-error { color: #e53935; font-size: 0.82rem; margin-bottom: 0.8rem; display: none; }
+.login-btn { width: 100%; background: #0a1628; color: #c9a84c; border: none; border-radius: 8px; padding: 0.85rem; font-size: 1rem; font-weight: 600; cursor: pointer; font-family: 'Noto Sans Tamil',sans-serif; transition: background 0.2s; }
+.login-btn:hover { background: #1e2d45; }
+.login-contact { color: #6b7c93; font-size: 0.75rem; margin-top: 1.2rem; }
+
+/* HEADER */
+.tnstc-header {
+  background: var(--navy); padding: 0; position: relative;
+  overflow: hidden; box-shadow: 0 4px 20px rgba(10,22,40,0.4);
+}
+.tnstc-header::after {
+  content:''; position:absolute; bottom:0; left:0; right:0;
+  height:4px; background: linear-gradient(90deg,var(--gold),var(--gold-light),var(--gold));
+}
+.header-stripe { height:6px; background: linear-gradient(90deg,var(--gold),var(--gold-light),var(--gold)); }
+.header-body { display:flex; align-items:center; gap:12px; padding:16px 20px 20px; flex-wrap:wrap; }
+.tnstc-emblem {
+  width:70px; height:70px; background:#fff; border-radius:50%;
+  border:3px solid var(--gold); display:flex; align-items:center; justify-content:center;
+  flex-shrink:0; overflow:hidden; box-shadow:0 2px 10px rgba(0,0,0,0.4);
+}
+.header-text { flex:1; }
+.header-text .main-title { font-family:'Noto Serif Tamil',serif; font-size:18px; font-weight:700; color:var(--gold); line-height:1.3; }
+.header-text .sub-title { font-size:12px; color:var(--cream); opacity:0.85; margin-top:4px; }
+.header-bus { flex-shrink:0; display:flex; flex-direction:column; align-items:flex-end; margin-left:auto; }
+.logout-bar { display:flex; justify-content:flex-end; padding:4px 16px 8px; }
+.logout-btn { background:transparent; border:1.5px solid #c9a84c; color:#c9a84c; border-radius:6px; padding:5px 16px; font-size:0.78rem; font-weight:600; cursor:pointer; font-family:'Noto Sans Tamil',sans-serif; transition:background 0.2s,color 0.2s; }
+.logout-btn:hover { background:#c9a84c; color:#0a1628; }
+
+/* MAIN */
+main { max-width: 1100px; margin: 0 auto; padding: 2rem 1.2rem 3rem; }
+
+.section-badge {
+  display:inline-flex; align-items:center; gap:8px;
+  background:var(--card-bg); border:1px solid var(--border);
+  border-left:4px solid var(--gold); padding:6px 14px;
+  border-radius:0 6px 6px 0; font-size:13px; font-weight:700;
+  color:var(--slate); margin-bottom:14px;
+  box-shadow:0 1px 4px rgba(10,22,40,0.06);
+}
+
+/* LAYOUT */
+.layout { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+@media(max-width:700px){ .layout{grid-template-columns:1fr;} }
+
+/* CARDS */
+.card {
+  background:var(--card-bg); border:1px solid var(--border);
+  border-top:3px solid var(--gold); border-radius:12px;
+  padding:20px; box-shadow:0 2px 16px rgba(10,22,40,0.07);
+}
+.card-title {
+  font-size:11px; letter-spacing:1.5px; text-transform:uppercase;
+  color:var(--muted); font-weight:700; margin-bottom:16px;
+  display:flex; align-items:center; gap:8px;
+  padding-bottom:10px; border-bottom:2px solid var(--gold);
+}
+.card-title::before { content:''; width:20px; height:3px; background:var(--gold); border-radius:2px; flex-shrink:0; }
+
+/* FIELDS */
+.field { margin-bottom:12px; }
+.field label { display:block; font-size:12px; color:var(--muted); margin-bottom:5px; font-weight:600; text-transform:uppercase; letter-spacing:0.06em; }
+.field-row { display:grid; grid-template-columns:1fr auto; gap:8px; align-items:center; }
+.field input {
+  width:100%; background:#fff; border:1.5px solid var(--border);
+  border-radius:7px; padding:9px 12px; color:var(--navy);
+  font-size:14px; font-family:'Noto Sans Tamil',sans-serif;
+  font-weight:600; outline:none; transition:border-color 0.2s;
+}
+.field input:focus { border-color:var(--gold); }
+.field .unit { font-size:11px; color:var(--muted); white-space:nowrap; padding:0 4px; }
+.divider { height:1px; background:var(--border); margin:14px 0; }
+.auto-val { background:#f9f5ee; border:1.5px solid var(--border); border-radius:7px; padding:10px 14px; margin-top:6px; display:flex; flex-direction:column; gap:4px; }
+.auto-val .av-label { font-size:11px; color:var(--muted); }
+.auto-val .av-num { font-size:18px; font-weight:700; color:var(--slate); }
+
+/* RESULT GRIDS */
+.result-section { display:flex; flex-direction:column; gap:16px; }
+.res-grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+.res-grid-2 { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; }
+@media(max-width:700px){ .res-grid-3,.res-grid-2{ grid-template-columns:1fr; } }
+
+.res-card {
+  background:var(--card-bg); border:1px solid var(--border);
+  border-radius:12px; padding:1.3rem 1.4rem;
+  box-shadow:0 2px 12px rgba(10,22,40,0.06);
+  opacity:0; transform:translateY(12px);
+  transition:opacity 0.4s ease, transform 0.4s ease, box-shadow 0.2s;
+}
+.res-card.visible { opacity:1; transform:translateY(0); }
+.res-card:hover { box-shadow:0 6px 20px rgba(10,22,40,0.1); }
+.res-card-title { font-family:'Noto Serif Tamil',serif; font-size:0.95rem; color:var(--muted); margin-bottom:1rem; display:flex; align-items:center; gap:0.5rem; }
+
+/* LINE ITEMS */
+.line-item { display:table; width:100%; padding:0.42rem 0; border-bottom:1px dashed #ece7de; font-size:0.85rem; }
+.line-item:last-child { border-bottom:none; }
+.li-label { display:table-cell; color:var(--muted); width:65%; padding-right:8px; vertical-align:middle; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.li-value { display:table-cell; font-weight:600; color:var(--navy); text-align:right; white-space:nowrap; vertical-align:middle; }
+.line-item.line-total { margin-top:0.4rem; padding-top:0.6rem; border-top:2px solid var(--gold); border-bottom:none; }
+.line-item.line-total .li-label { font-weight:700; color:var(--navy); font-size:0.88rem; white-space:nowrap; }
+.line-item.line-total .li-value { color:var(--gold); font-size:0.95rem; }
+
+/* GRAND TOTAL */
+.grand-total {
+  background:var(--navy); border:2px solid var(--gold);
+  border-radius:12px; padding:20px 24px;
+  display:flex; justify-content:space-between; align-items:center;
+  gap:16px; margin-top:4px;
+  box-shadow:0 4px 20px rgba(10,22,40,0.3); position:relative; overflow:hidden;
+}
+.grand-total::before { content:''; position:absolute; top:0; left:0; right:0; height:4px; background:linear-gradient(90deg,var(--gold),var(--gold-light),var(--gold)); }
+.gt-label { font-size:11px; letter-spacing:1px; color:var(--gold); margin-bottom:5px; font-weight:600; text-transform:uppercase; }
+.gt-sub { font-size:11px; color:rgba(255,255,255,0.5); }
+.gt-amount { font-size:26px; font-weight:700; color:var(--gold-light); white-space:nowrap; }
+
+/* FOOTER */
+.footer { text-align:center; font-size:11px; color:var(--muted); margin-top:24px; padding-bottom:8px; letter-spacing:0.5px; }
+
+input::-webkit-inner-spin-button,
+input::-webkit-outer-spin-button { opacity:0.3; }
+
+/* MOBILE */
+@media(max-width:600px){
+  .header-body { gap:8px; padding:10px 12px 14px; }
+  .tnstc-emblem { width:50px; height:50px; }
+  .header-text .main-title { font-size:13px; }
+  .header-text .sub-title { font-size:10px; }
+  .header-bus svg { width:60px; height:30px; }
+  .header-bus > div { font-size:9px !important; }
+  main { padding:1rem 0.75rem 2.5rem; }
+  .layout { grid-template-columns:1fr !important; gap:14px; }
+  .card { padding:14px 12px; }
+  .field input { padding:8px 10px; font-size:13px; }
+  .res-grid-3,.res-grid-2 { grid-template-columns:1fr !important; gap:12px; }
+  .res-card { padding:1rem; }
+  .grand-total { flex-direction:column; align-items:flex-start; gap:8px; padding:14px 16px; }
+  .gt-amount { font-size:22px; }
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginOverlay" class="login-overlay">
+  <div class="login-box">
+    <div class="login-icon">🚌</div>
+    <h2 class="login-title">போக்குவரத்து ஓய்வூதியர்</h2>
+    <p class="login-sub">பணப்பலன் கணக்கீடு மென்பொருள்</p>
+    <div class="login-field">
+      <label class="login-label">கடவுச்சொல் (Password)</label>
+      <input type="password" id="loginPassword" placeholder="Enter password" class="login-input" onkeydown="if(event.key==='Enter') doLogin()"/>
+    </div>
+    <div id="loginError" class="login-error">❌ தவறான கடவுச்சொல். மீண்டும் முயற்சிக்கவும்.</div>
+    <button onclick="doLogin()" class="login-btn">உள்நுழை (Login)</button>
+    <p class="login-contact">D. கதிரேசன் · மாநிலத்தலைவர் · 9965181476</p>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header class="tnstc-header">
+  <div class="header-stripe"></div>
+  <div class="header-body">
+    <div class="tnstc-emblem">
+      <svg viewBox="0 0 54 54" width="54" height="54" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="27" cy="27" r="26" fill="#0a1628" stroke="#c9a84c" stroke-width="2"/>
+        <rect x="8" y="18" width="38" height="14" rx="3" fill="#c9a84c" opacity="0.9"/>
+        <rect x="10" y="20" width="6" height="5" rx="1" fill="#0a1628"/>
+        <rect x="18" y="20" width="6" height="5" rx="1" fill="#0a1628"/>
+        <rect x="30" y="20" width="6" height="5" rx="1" fill="#0a1628"/>
+        <rect x="38" y="20" width="6" height="5" rx="1" fill="#0a1628"/>
+        <path d="M8,29 L46,29 L46,31 L8,31 Z" fill="#e8c96a"/>
+        <circle cx="15" cy="34" r="3" fill="#0a1628" stroke="#c9a84c" stroke-width="1"/>
+        <circle cx="39" cy="34" r="3" fill="#0a1628" stroke="#c9a84c" stroke-width="1"/>
+        <text x="27" y="15" font-size="5" fill="#e8c96a" font-weight="bold" text-anchor="middle" font-family="sans-serif">TNSTC</text>
+      </svg>
+    </div>
+    <div class="header-text">
+      <div class="main-title">குறைந்த பணி ஓய்வூதியர் பென்ஷன் கணக்கீடு</div>
+      <div class="sub-title">30 ஆண்டுகளுக்கு குறைவான பணி புரிந்தவர்களுக்கான பணப்பலன் கணக்கீட்டு மென்பொருள்</div>
+    </div>
+    <div class="header-bus" style="display:flex;flex-direction:column;align-items:flex-end;margin-left:auto;">
+      <svg viewBox="0 0 100 50" width="100" height="50" xmlns="http://www.w3.org/2000/svg">
+        <rect x="2" y="5" width="92" height="32" rx="4" fill="#fff" opacity="0.15"/>
+        <rect x="2" y="20" width="92" height="4" fill="#c9a84c" opacity="0.7"/>
+        <rect x="8" y="8" width="14" height="10" rx="2" fill="#99CCFF" opacity="0.6"/>
+        <rect x="26" y="8" width="14" height="10" rx="2" fill="#99CCFF" opacity="0.6"/>
+        <rect x="44" y="8" width="14" height="10" rx="2" fill="#99CCFF" opacity="0.6"/>
+        <rect x="62" y="8" width="14" height="10" rx="2" fill="#99CCFF" opacity="0.6"/>
+        <circle cx="22" cy="40" r="6" fill="#444"/><circle cx="22" cy="40" r="3" fill="#888"/>
+        <circle cx="76" cy="40" r="6" fill="#444"/><circle cx="76" cy="40" r="3" fill="#888"/>
+        <text x="28" y="34" font-size="7" fill="#c9a84c" font-weight="bold" font-family="sans-serif">TNSTC</text>
+      </svg>
+      <div style="text-align:right;margin-top:4px;line-height:1.6;font-size:12px;">
+        <div style="font-weight:bold;color:#fff;font-size:13px;">D. கதிரேசன்</div>
+        <div style="font-weight:bold;color:#fff;font-size:12px;">மாநிலத்தலைவர்</div>
+        <div style="font-weight:bold;color:#fff;font-size:13px;">9965181476</div>
+      </div>
+    </div>
+  </div>
+  <div class="logout-bar">
+    <button onclick="doLogout()" class="logout-btn">🔓 வெளியேறு (Logout)</button>
+  </div>
+  <div class="header-stripe"></div>
+</header>
+
+<main>
+
+  <!-- INPUTS + RESULTS -->
+  <div class="layout">
+
+    <!-- LEFT: INPUTS -->
+    <div>
+      <div class="section-badge">📋 அடிப்படை தரவு உள்ளீடு</div>
+      <div class="card">
+        <div class="card-title">பணியாளர் விவரங்கள்</div>
+
+        <div class="field">
+          <label>அடிப்படை ஊதியம் (Basic Pay)</label>
+          <div class="field-row">
+            <input type="number" id="basic" value="50000" oninput="calculate()"/>
+            <span class="unit">₹</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>அகவிலைப்படி % (Active DA %)</label>
+          <div class="field-row">
+            <input type="number" id="daActivePct" value="60" oninput="calculate()"/>
+            <span class="unit">%</span>
+          </div>
+          <div class="auto-val">
+            <span class="av-label">அகவிலைப்படி தொகை</span>
+            <span class="av-num" id="daActiveAmt">₹30,000</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>வீட்டு வாடகை படி (HRA)</label>
+          <div class="field-row">
+            <input type="number" id="hra" value="4100" oninput="calculate()"/>
+            <span class="unit">₹</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>நகர இசை படி (CCA)</label>
+          <div class="field-row">
+            <input type="number" id="cca" value="720" oninput="calculate()"/>
+            <span class="unit">₹</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>பணி காலம் (Service Years)</label>
+          <div class="field-row">
+            <input type="number" id="service" value="30" min="1" max="39" oninput="calculate()"/>
+            <span class="unit">yrs</span>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="card-title" style="margin-top:4px;">கணக்கீட்டு அளவுருக்கள்</div>
+
+        <div class="field">
+          <label>ஓய்வூதிய அகவிலை % (Pension DA %)</label>
+          <div class="field-row">
+            <input type="number" id="daPensionPct" value="42" oninput="calculate()"/>
+            <span class="unit">%</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Commutation காரணி</label>
+          <div class="field-row">
+            <input type="number" id="commFactor" value="8.371" step="0.001" oninput="calculate()"/>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>விடுப்பு நாட்கள் (Leave Days)</label>
+          <div class="field-row">
+            <input type="number" id="leaveDays" value="240" oninput="calculate()"/>
+            <span class="unit">days</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- RIGHT: RESULTS -->
+    <div>
+      <div class="section-badge">📊 கணக்கீட்டு முடிவுகள்</div>
+      <div class="result-section">
+
+        <!-- Row 1: Pension + Family Pension + Commutation -->
+        <div class="res-grid-3">
+
+          <div class="res-card">
+            <div class="res-card-title">🎖️ ஓய்வூதியம் (Pension)</div>
+            <div class="line-item"><span class="li-label">ஓய்வூதிய அடிப்படை</span><span class="li-value" id="rPensionBasic">—</span></div>
+            <div class="line-item"><span class="li-label">அகவிலை (<span id="rDaPenPct">—</span>%)</span><span class="li-value" id="rDaOnPension">—</span></div>
+            <div class="line-item"><span class="li-label">மருத்துவ படி</span><span class="li-value">₹100</span></div>
+            <div class="line-item line-total"><span class="li-label">மொத்த மாத ஓய்வூதியம்</span><span class="li-value" id="rTotalPension">—</span></div>
+          </div>
+
+          <div class="res-card">
+            <div class="res-card-title">👨‍👩‍👧 குடும்ப ஓய்வூதியம்</div>
+            <div class="line-item"><span class="li-label">குடும்ப ஓய்வூதிய அடிப்படை</span><span class="li-value" id="rFamilyBasic">—</span></div>
+            <div class="line-item"><span class="li-label">அகவிலை (<span id="rDaFamPct">—</span>%)</span><span class="li-value" id="rDaOnFamily">—</span></div>
+            <div class="line-item line-total"><span class="li-label">மொத்த குடும்ப ஓய்வூதியம்</span><span class="li-value" id="rTotalFamily">—</span></div>
+          </div>
+
+          <div class="res-card">
+            <div class="res-card-title">📊 முன்கூட்டு தொகை</div>
+            <div class="line-item"><span class="li-label">கழிக்கப்பட்ட ஓய்வூதியம் (÷3)</span><span class="li-value" id="rCommPart">—</span></div>
+            <div class="line-item"><span class="li-label">காரணி (×12×<span id="rCF">—</span>)</span><span class="li-value" id="rCommDetail">—</span></div>
+            <div class="line-item line-total"><span class="li-label">முன்கூட்டு தொகை</span><span class="li-value" id="rCommutation">—</span></div>
+          </div>
+
+        </div>
+
+        <!-- Row 2: Gratuity + Leave Salary -->
+        <div class="res-grid-2">
+
+          <div class="res-card">
+            <div class="res-card-title">🏆 பணிக்கொடை தொகை (Gratuity)</div>
+            <div class="line-item"><span class="li-label">அடிப்படை + அகவிலை (B+DA)</span><span class="li-value" id="rBDA">—</span></div>
+            <div class="line-item"><span class="li-label">1 நாள் (÷30)</span><span class="li-value" id="rGratDay">—</span></div>
+            <div class="line-item"><span class="li-label">1 ஆண்டு (×15)</span><span class="li-value" id="rGratYear">—</span></div>
+            <div class="line-item line-total"><span class="li-label" id="rGratLabel">மொத்த பணிக்கொடை</span><span class="li-value" id="rGratuity">—</span></div>
+          </div>
+
+          <div class="res-card">
+            <div class="res-card-title">🌴 விடுப்பு ஊதியம் (Leave Salary)</div>
+            <div class="line-item"><span class="li-label">B + DA + HRA + CCA</span><span class="li-value" id="rLeaveBase">—</span></div>
+            <div class="line-item"><span class="li-label">1 நாள் (÷30)</span><span class="li-value" id="rLeaveDay">—</span></div>
+            <div class="line-item"><span class="li-label">விடுப்பு நாட்கள்</span><span class="li-value" id="rLeaveDays">—</span></div>
+            <div class="line-item line-total"><span class="li-label" id="rLeaveLabel">மொத்த விடுப்பு ஊதியம்</span><span class="li-value" id="rLeaveSalary">—</span></div>
+          </div>
+
+        </div>
+
+        <!-- Grand Total -->
+        <div class="grand-total">
+          <div>
+            <div class="gt-label">மொத்த ஓய்வூதிய நிதி · Total Retirement Corpus</div>
+            <div class="gt-sub">முன்கூட்டு தொகை + பணிக்கொடை + விடுப்பு ஊதியம்</div>
+          </div>
+          <div class="gt-amount" id="rTotal">—</div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    போக்குவரத்து சேவை விதிகளின்படி கணக்கீடு செய்யப்பட்டது &nbsp;·&nbsp; Calculated as per Transport Service Rules
+  </div>
+</main>
+
+<script>
+const inr = v => '₹' + Math.round(v).toLocaleString('en-IN');
+const inrD = v => '₹' + v.toLocaleString('en-IN', {maximumFractionDigits:2});
+const s = (id,v) => { const el=document.getElementById(id); if(el) el.textContent=v; };
+
+function calculate(){
+  const basic      = +document.getElementById('basic').value || 0;
+  const daActPct   = +document.getElementById('daActivePct').value || 0;
+  const hra        = +document.getElementById('hra').value || 0;
+  const cca        = +document.getElementById('cca').value || 0;
+  const svc        = +document.getElementById('service').value || 0;
+  const daPenPct   = +document.getElementById('daPensionPct').value || 0;
+  const cf         = +document.getElementById('commFactor').value || 8.371;
+  const ld         = +document.getElementById('leaveDays').value || 0;
+
+  // Active DA
+  const daAmt = basic * (daActPct / 100);
+  s('daActiveAmt', inr(daAmt));
+
+  // === PENSION ===
+  // Formula: Basic / 2 / 30 * Service (proportional to service)
+  const pensionBasic = basic / 2 / 30 * svc;
+  const daOnPension  = pensionBasic * (daPenPct / 100);
+  const medical      = 100;
+  const totalPension = pensionBasic + daOnPension + medical;
+
+  s('rPensionBasic',  inr(pensionBasic));
+  s('rDaPenPct',      daPenPct);
+  s('rDaOnPension',   inr(daOnPension));
+  s('rTotalPension',  inr(totalPension));
+
+  // === FAMILY PENSION ===
+  // Formula: Pension Basic × 2 × 30% = Pension Basic × 60%
+  const familyBasic  = pensionBasic * 0.60;
+  const daOnFamily   = familyBasic * (daActPct / 100);
+  const totalFamily  = familyBasic + daOnFamily;
+
+  s('rFamilyBasic',   inr(familyBasic));
+  s('rDaFamPct',      daActPct);
+  s('rDaOnFamily',    inr(daOnFamily));
+  s('rTotalFamily',   inr(totalFamily));
+
+  // === COMMUTATION ===
+  // Formula: Pension Basic / 3 × 12 × Commutation Factor
+  const commPart   = pensionBasic / 3;
+  const commutation = commPart * 12 * cf;
+
+  s('rCommPart',    inr(commPart));
+  s('rCF',          cf);
+  s('rCommDetail',  inr(commPart) + ' × 12 × ' + cf);
+  s('rCommutation', inr(commutation));
+
+  // === GRATUITY ===
+  // Formula: (Basic + DA) / 30 × 15 × Service
+  const bda      = basic + daAmt;
+  const gratDay  = bda / 30;
+  const gratYear = gratDay * 15;
+  const gratuity = gratYear * svc;
+
+  s('rBDA',       inr(bda));
+  s('rGratDay',   inrD(gratDay));
+  s('rGratYear',  inrD(gratYear));
+  s('rGratLabel', 'மொத்த பணிக்கொடை (×' + svc + ' yrs)');
+  s('rGratuity',  inr(gratuity));
+
+  // === LEAVE SALARY ===
+  // Formula: (Basic + DA + HRA + CCA) / 30 × Leave Days
+  const leaveBase  = basic + daAmt + hra + cca;
+  const leaveDay   = leaveBase / 30;
+  const leaveSalary = leaveDay * ld;
+
+  s('rLeaveBase',   inr(leaveBase));
+  s('rLeaveDay',    inrD(leaveDay));
+  s('rLeaveDays',   ld + ' நாட்கள்');
+  s('rLeaveLabel',  'மொத்த விடுப்பு ஊதியம் (' + ld + ' நாட்கள்)');
+  s('rLeaveSalary', inr(leaveSalary));
+
+  // === GRAND TOTAL ===
+  const total = commutation + gratuity + leaveSalary;
+  s('rTotal', inr(total));
+
+  // Animate cards
+  document.querySelectorAll('.res-card').forEach((el, i) => {
+    el.classList.remove('visible');
+    setTimeout(() => el.classList.add('visible'), 80 * i);
+  });
+}
+
+// LOGIN
+const PASS = "tnstc2025";
+function doLogin(){
+  const val = document.getElementById('loginPassword').value;
+  if(val === PASS){
+    document.getElementById('loginOverlay').classList.add('hidden');
+    sessionStorage.setItem('auth','1');
+  } else {
+    document.getElementById('loginError').style.display='block';
+    document.getElementById('loginPassword').style.borderColor='#e53935';
+    document.getElementById('loginPassword').focus();
+  }
+}
+function doLogout(){
+  sessionStorage.removeItem('auth');
+  document.getElementById('loginPassword').value='';
+  document.getElementById('loginError').style.display='none';
+  document.getElementById('loginPassword').style.borderColor='#e3ddd4';
+  document.getElementById('loginOverlay').classList.remove('hidden');
+}
+if(sessionStorage.getItem('auth')==='1'){
+  document.getElementById('loginOverlay').classList.add('hidden');
+}
+
+calculate();
+</script>
+</body>
+</html>
