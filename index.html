@@ -974,6 +974,8 @@ input::-webkit-inner-spin-button,input::-webkit-outer-spin-button{opacity:0.3;}
           <div class="gt-amount" id="rArrearsGrand">—</div>
         </div>
 
+        <div class="arrears-na" id="rArrearsNote" style="display:none;margin-top:12px;"></div>
+
       </div>
     </div>
 
@@ -1207,37 +1209,54 @@ function populateArrearsSelectors(){
   populateArrearsMonths();
 }
 function populateArrearsMonths(){
-  var year = document.getElementById('aYear').value;
   var monthSel = document.getElementById('aMonth');
-  var months = ARREARS_YEAR_MONTHS[year] || [];
-  monthSel.innerHTML = months.map(function(m){
-    return '<option value="'+m+'">'+ARREARS_MONTHS[m-1]+'</option>';
-  }).join('');
+  var prev = monthSel.value;
+  // Always list all 12 months.
+  var html = '';
+  for(var m=1; m<=12; m++){
+    html += '<option value="'+m+'">'+ARREARS_MONTHS[m-1]+'</option>';
+  }
+  monthSel.innerHTML = html;
+  if(prev){ monthSel.value = prev; }
 }
 
 function calculateArrears(){
   var year = document.getElementById('aYear').value;
   var monthSel = document.getElementById('aMonth');
   if(monthSel.options.length === 0){ populateArrearsMonths(); }
-  var month = parseInt(monthSel.value,10);
+  var month = parseInt(monthSel.value,10) || 1;
   var key = year+"-"+(month<10?"0":"")+month;
-  var baseAmount = ARREARS_DATA[key] || 0;
   var basic = (+document.getElementById('aBasic').value) || 0;
-  var scaled = baseAmount * (basic / ARREARS_BASE_PENSION);
+  var noteEl = document.querySelector('#calcArrears #rArrearsNote');
 
   sM2("rArrearsDate", ARREARS_MONTHS[month-1]+" "+year);
-  sM2("rArrearsBase", inr(baseAmount));
   sM2("rArrearsBasic", inr(basic));
-  sM2("rArrearsTotal", inr(scaled));
-  sM2("rArrearsGrand", inr(scaled));
+
+  if(ARREARS_DATA.hasOwnProperty(key)){
+    var baseAmount = ARREARS_DATA[key];
+    var scaled = baseAmount * (basic / ARREARS_BASE_PENSION);
+    sM2("rArrearsBase", inr(baseAmount));
+    sM2("rArrearsTotal", inr(scaled));
+    sM2("rArrearsGrand", inr(scaled));
+    if(noteEl){ noteEl.style.display = 'none'; noteEl.textContent = ''; }
+  } else {
+    // Outside the scheme's covered range (01.09.2016 – 05.2026).
+    sM2("rArrearsBase", "—");
+    sM2("rArrearsTotal", "—");
+    sM2("rArrearsGrand", "—");
+    if(noteEl){
+      var ym = parseInt(year,10)*12 + month;
+      var msg = (ym < 2016*12 + 9)
+        ? "⚠️ 01.09.2016 க்கு முன் ஓய்வு பெற்றவர்கள் இந்தத் திட்டத்தில் சேர்க்கப்படவில்லை."
+        : "⚠️ 2026 மே மாதத்திற்குப் பிறகு வழங்க வேண்டிய நிலுவை இல்லை.";
+      noteEl.textContent = msg;
+      noteEl.style.display = 'block';
+    }
+  }
 }
 function sM2(id,v){ var el=document.querySelector('#calcArrears #'+id); if(el) el.textContent=v; }
 
 populateArrearsSelectors();
-document.getElementById('aYear').addEventListener('change', function(){
-  populateArrearsMonths();
-  calculateArrears();
-});
 calculateArrears();
 
 
