@@ -149,6 +149,28 @@ main {
   transition: border-color 0.2s;
 }
 .field input:focus { border-color: var(--gold); background: #fffdf7; }
+.field select {
+  width: 100%;
+  background: #fff;
+  border: 1.5px solid var(--border);
+  border-radius: 7px;
+  padding: 9px 12px;
+  color: var(--navy);
+  font-size: 14px;
+  font-family: 'Noto Sans Tamil', sans-serif;
+  font-weight: 600;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+.field select:focus { border-color: var(--gold); background: #fffdf7; }
+.arrears-note {
+  background: var(--card-bg); border: 1px solid var(--border);
+  border-left: 4px solid var(--gold); border-radius: 0 6px 6px 0;
+  padding: 10px 14px; font-size: 12px; color: var(--muted);
+  line-height: 1.6; margin-top: 14px;
+}
+.arrears-na { color: #e53935; font-weight: 700; }
 .field .unit {
   font-size: 11px; color: var(--muted);
   white-space: nowrap; padding: 0 4px;
@@ -481,6 +503,12 @@ input::-webkit-inner-spin-button,input::-webkit-outer-spin-button{opacity:0.3;}
         <div class="cc-icon">&#128203;</div>
         <div class="cc-title">குறைந்த பணி ஓய்வூதியம்</div>
         <div class="cc-sub">30 ஆண்டுகளுக்கு குறைவான பணி புரிந்தவர்களுக்கான பென்ஷன் மற்றும் குடும்ப ஓய்வூதிய கணக்கீடு</div>
+        <div class="cc-btn-label">தேர்வு செய்க &#8594;</div>
+      </button>
+      <button class="calc-card" onclick="showCalc('arrears')">
+        <div class="cc-icon">&#128181;</div>
+        <div class="cc-title">DA நிலுவை தொகை</div>
+        <div class="cc-sub">01.09.2016 க்குப் பின் ஓய்வு பெற்றவர்களுக்கு 2026 மே வரை அரசு வழங்க வேண்டிய அகவிலைப்படி உயர்வு நிலுவை தொகை</div>
         <div class="cc-btn-label">தேர்வு செய்க &#8594;</div>
       </button>
     </div>
@@ -856,23 +884,128 @@ input::-webkit-inner-spin-button,input::-webkit-outer-spin-button{opacity:0.3;}
 </main>
 </div>
 
+<!-- ==================== DA ARREARS CALCULATOR ==================== -->
+<div id="calcArrears" class="calc-screen">
+<header class="tnstc-header">
+  <div class="header-stripe"></div>
+  <div class="header-body">
+    <div class="tnstc-emblem" id="arrearsEmblem"></div>
+    <div class="header-text">
+      <div class="main-title">போக்குவரத்து ஓய்வூதியர் நலமீட்பு சங்கம்</div>
+      <div class="sub-title">அகவிலைப்படி (DA) உயர்வு நிலுவை தொகை கணக்கீடு</div>
+    </div>
+    <div class="header-bus">
+      <svg viewBox="0 0 100 50" width="100" height="50" xmlns="http://www.w3.org/2000/svg">
+  <rect x="2" y="5" width="92" height="32" rx="4" fill="#fff" opacity="0.15"/>
+  <rect x="2" y="20" width="92" height="4" fill="#c9a84c" opacity="0.7"/>
+  <rect x="8" y="8" width="14" height="10" rx="2" fill="#99CCFF" opacity="0.6"/>
+  <rect x="26" y="8" width="14" height="10" rx="2" fill="#99CCFF" opacity="0.6"/>
+  <rect x="44" y="8" width="14" height="10" rx="2" fill="#99CCFF" opacity="0.6"/>
+  <rect x="62" y="8" width="14" height="10" rx="2" fill="#99CCFF" opacity="0.6"/>
+  <circle cx="22" cy="40" r="6" fill="#444"/><circle cx="22" cy="40" r="3" fill="#888"/>
+  <circle cx="76" cy="40" r="6" fill="#444"/><circle cx="76" cy="40" r="3" fill="#888"/>
+  <text x="28" y="34" font-size="7" fill="#c9a84c" font-weight="bold" font-family="sans-serif">TNSTC</text>
+</svg>
+      <div class="contact-info">
+        <div>D. கதிரேசன்</div>
+        <div>மாநிலத்தலைவர்</div>
+        <div>9965181476</div>
+      </div>
+    </div>
+  </div>
+  <div class="top-bar">
+    <button onclick="showSelector()" class="back-btn">&#8592; திரும்பு</button>
+    <button onclick="doLogout()" class="logout-btn">&#128275; வெளியேறு</button>
+  </div>
+  <div class="header-stripe"></div>
+</header>
+<main>
+
+  <div class="layout">
+
+    <!-- LEFT: INPUTS -->
+    <div>
+      <div class="section-badge">📋 ஓய்வு விவரங்கள்</div>
+      <div class="card">
+        <div class="card-title">பணியாளர் விவரங்கள்</div>
+
+        <div class="field">
+          <label>ஓய்வூதிய அடிப்படை (Basic Pension) ₹</label>
+          <input type="number" id="aBasic" value="26000" oninput="calculateArrears()"/>
+        </div>
+
+        <div class="field">
+          <label>ஓய்வு பெற்ற ஆண்டு (Retirement Year)</label>
+          <select id="aYear" onchange="calculateArrears()"></select>
+        </div>
+
+        <div class="field">
+          <label>ஓய்வு பெற்ற மாதம் (Retirement Month)</label>
+          <select id="aMonth" onchange="calculateArrears()"></select>
+        </div>
+
+        <div class="arrears-note">
+          01.09.2016 அன்று அல்லது அதற்குப் பின் ஓய்வு பெற்றவர்களுக்கு, 2026 மே மாதம் வரை அரசு வழங்க வேண்டிய அகவிலைப்படி (DA) உயர்வு நிலுவைத் தொகை இங்கு கணக்கிடப்படுகிறது. தொகை ₹26,000 ஓய்வூதிய அடிப்படையை அடிப்படையாகக் கொண்டு, உங்கள் ஓய்வூதிய அடிப்படைக்கு ஏற்ப விகிதாசாரமாக மாற்றப்படும்.
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: RESULTS -->
+    <div>
+      <div class="section-badge">📊 கணக்கீட்டு முடிவு</div>
+      <div class="result-section">
+
+        <div class="res-card rcard visible">
+          <h3 class="res-card-title">💰 DA நிலுவை தொகை</h3>
+          <div class="line-item"><span class="li-label">ஓய்வு பெற்ற தேதி</span><span class="li-value" id="rArrearsDate">—</span></div>
+          <div class="line-item"><span class="li-label">அடிப்படை நிலுவை (₹26,000 அடிப்படையில்)</span><span class="li-value" id="rArrearsBase">—</span></div>
+          <div class="line-item"><span class="li-label">உங்கள் ஓய்வூதிய அடிப்படை</span><span class="li-value" id="rArrearsBasic">—</span></div>
+          <div class="line-item line-total"><span class="li-label">மொத்த DA நிலுவை தொகை</span><span class="li-value" id="rArrearsTotal">—</span></div>
+        </div>
+
+        <!-- Grand Total -->
+        <div class="grand-total">
+          <div>
+            <div class="gt-label">மொத்த DA நிலுவை தொகை · Total DA Arrears</div>
+            <div class="gt-sub">01.09.2016 முதல் 2026 மே வரை</div>
+          </div>
+          <div class="gt-amount" id="rArrearsGrand">—</div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    போக்குவரத்து சேவை விதிகளின்படி கணக்கீடு செய்யப்பட்டது &nbsp;·&nbsp; Calculated as per Transport Service Rules
+  </div>
+
+</main>
+</div>
+
 <script>
 /* ── NAVIGATION ── */
 function showSelector() {
   document.getElementById('selectorScreen').classList.add('active');
   document.getElementById('calcMain').classList.remove('active');
   document.getElementById('calcKathir').classList.remove('active');
+  document.getElementById('calcArrears').classList.remove('active');
 }
 function showCalc(which) {
   document.getElementById('selectorScreen').classList.remove('active');
   document.getElementById('calcMain').classList.remove('active');
   document.getElementById('calcKathir').classList.remove('active');
+  document.getElementById('calcArrears').classList.remove('active');
   if(which === 'main') {
     document.getElementById('calcMain').classList.add('active');
     setTimeout(calculateMain, 50);
-  } else {
+  } else if(which === 'kathir') {
     document.getElementById('calcKathir').classList.add('active');
     setTimeout(calculateKathir, 50);
+  } else {
+    document.getElementById('calcArrears').classList.add('active');
+    setTimeout(calculateArrears, 50);
   }
 }
 
@@ -899,6 +1032,7 @@ function doLogout() {
   document.getElementById('selectorScreen').classList.remove('active');
   document.getElementById('calcMain').classList.remove('active');
   document.getElementById('calcKathir').classList.remove('active');
+  document.getElementById('calcArrears').classList.remove('active');
 }
 if(sessionStorage.getItem('auth') === '1') {
   document.getElementById('loginOverlay').classList.add('hidden');
@@ -1044,6 +1178,75 @@ function calculateKathir(){
   });
 }
 calculateKathir();
+
+
+/* ── DA ARREARS CALCULATOR JS ── */
+
+var ARREARS_BASE_PENSION = 26000;
+var ARREARS_DATA = {"2016-09":550160,"2016-10":550160,"2016-11":550160,"2016-12":550160,"2017-01":550160,"2017-02":550160,"2017-03":550160,"2017-04":550160,"2017-05":550160,"2017-06":550160,"2017-07":550160,"2017-08":550160,"2017-09":550160,"2017-10":550160,"2017-11":550160,"2017-12":550160,"2018-01":550160,"2018-02":549640,"2018-03":549120,"2018-04":548600,"2018-05":548080,"2018-06":547560,"2018-07":546520,"2018-08":545480,"2018-09":544440,"2018-10":543400,"2018-11":542360,"2018-12":541320,"2019-01":539500,"2019-02":537680,"2019-03":535860,"2019-04":534040,"2019-05":532220,"2019-06":530400,"2019-07":527280,"2019-08":524160,"2019-09":521040,"2019-10":517920,"2019-11":514800,"2019-12":511680,"2020-01":508560,"2020-02":505440,"2020-03":502320,"2020-04":499200,"2020-05":496080,"2020-06":492960,"2020-07":489840,"2020-08":486720,"2020-09":483600,"2020-10":480480,"2020-11":477360,"2020-12":474240,"2021-01":471120,"2021-02":468000,"2021-03":464880,"2021-04":461760,"2021-05":458640,"2021-06":455520,"2021-07":452400,"2021-08":449280,"2021-09":446160,"2021-10":443040,"2021-11":439920,"2021-12":436800,"2022-01":430040,"2022-02":423280,"2022-03":416520,"2022-04":409760,"2022-05":403000,"2022-06":396240,"2022-07":388700,"2022-08":381160,"2022-09":373620,"2022-10":366080,"2022-11":358540,"2022-12":351000,"2023-01":342420,"2023-02":333840,"2023-03":325260,"2023-04":315640,"2023-05":306020,"2023-06":296400,"2023-07":285740,"2023-08":275080,"2023-09":264420,"2023-10":253760,"2023-11":243100,"2023-12":232440,"2024-01":220740,"2024-02":209040,"2024-03":197340,"2024-04":185640,"2024-05":173940,"2024-06":162240,"2024-07":149760,"2024-08":137280,"2024-09":124800,"2024-10":112320,"2024-11":99840,"2024-12":87360,"2025-01":74360,"2025-02":63700,"2025-03":53040,"2025-04":46540,"2025-05":40040,"2025-06":33540,"2025-07":26260,"2025-08":19760,"2025-09":15600,"2025-10":11440,"2025-11":7280,"2025-12":3120,"2026-01":2600,"2026-02":2080,"2026-03":1560,"2026-04":1040,"2026-05":520,"2026-06":0};
+var ARREARS_MONTHS = ["ஜனவரி","பிப்ரவரி","மார்ச்","ஏப்ரல்","மே","ஜூன்","ஜூலை","ஆகஸ்ட்","செப்டம்பர்","அக்டோபர்","நவம்பர்","டிசம்பர்"];
+
+function buildArrearsYearMonthMap(){
+  var map = {};
+  Object.keys(ARREARS_DATA).forEach(function(key){
+    var parts = key.split("-"), y = parts[0], m = parseInt(parts[1],10);
+    if(!map[y]) map[y] = [];
+    map[y].push(m);
+  });
+  return map;
+}
+var ARREARS_YEAR_MONTHS = buildArrearsYearMonthMap();
+
+function populateArrearsSelectors(){
+  var yearSel = document.getElementById('aYear');
+  var years = Object.keys(ARREARS_YEAR_MONTHS).sort();
+  yearSel.innerHTML = years.map(function(y){ return '<option value="'+y+'">'+y+'</option>'; }).join('');
+  yearSel.value = years[0];
+  populateArrearsMonths();
+}
+function populateArrearsMonths(){
+  var year = document.getElementById('aYear').value;
+  var monthSel = document.getElementById('aMonth');
+  var months = ARREARS_YEAR_MONTHS[year] || [];
+  monthSel.innerHTML = months.map(function(m){
+    return '<option value="'+m+'">'+ARREARS_MONTHS[m-1]+'</option>';
+  }).join('');
+}
+
+function calculateArrears(){
+  var year = document.getElementById('aYear').value;
+  var monthSel = document.getElementById('aMonth');
+  if(monthSel.options.length === 0){ populateArrearsMonths(); }
+  var month = parseInt(monthSel.value,10);
+  var key = year+"-"+(month<10?"0":"")+month;
+  var baseAmount = ARREARS_DATA[key] || 0;
+  var basic = (+document.getElementById('aBasic').value) || 0;
+  var scaled = baseAmount * (basic / ARREARS_BASE_PENSION);
+
+  sM2("rArrearsDate", ARREARS_MONTHS[month-1]+" "+year);
+  sM2("rArrearsBase", inr(baseAmount));
+  sM2("rArrearsBasic", inr(basic));
+  sM2("rArrearsTotal", inr(scaled));
+  sM2("rArrearsGrand", inr(scaled));
+}
+function sM2(id,v){ var el=document.querySelector('#calcArrears #'+id); if(el) el.textContent=v; }
+
+populateArrearsSelectors();
+document.getElementById('aYear').addEventListener('change', function(){
+  populateArrearsMonths();
+  calculateArrears();
+});
+calculateArrears();
+
+/* Reuse the main TNSTC emblem image for the arrears header */
+window.addEventListener('load', function(){
+  var src = document.querySelector('#calcMain .tnstc-emblem img');
+  if(src){
+    var img = document.createElement('img');
+    img.src = src.src;
+    document.getElementById('arrearsEmblem').appendChild(img);
+  }
+});
 
 
 /* ── SERVICE WORKER ── */
